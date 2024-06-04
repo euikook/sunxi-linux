@@ -72,6 +72,7 @@
 #define circ_inc(n, s) (((n) + 1) % (s))
 
 #define YT8531_PHY_ID 0x4f51e91b
+#define RTL8211FCG_PHY_ID 0x001cc916
 
 #define GETH_MAC_ADDRESS "00:00:00:00:00:00"
 static char *mac_str = GETH_MAC_ADDRESS;
@@ -802,7 +803,9 @@ static int geth_phy_init(struct net_device *ndev)
 			if (!phydev_tmp)
 				continue;
 
-			if (phydev_tmp->phy_id == EPHY_ID || phydev_tmp->phy_id == YT8531_PHY_ID) {
+			pr_err("BPI: addr=%d is not null, phydev_tmp->phy_id=%x \n", addr, phydev_tmp->phy_id);
+
+			if (phydev_tmp->phy_id == EPHY_ID || phydev_tmp->phy_id == YT8531_PHY_ID || phydev_tmp->phy_id == RTL8211FCG_PHY_ID) {
 				phydev = phydev_tmp;
 				priv->phy_addr = addr;
 				break;
@@ -2139,6 +2142,8 @@ static int geth_hw_init(struct platform_device *pdev)
 
 	if (!of_property_read_u32(np, "rx-delay", &value))
 		priv->rx_delay = value;
+		
+	pr_info("BPI: tx_delay=%d rx_delay=%d\n", priv->tx_delay, priv->rx_delay);
 
 	/* config pinctrl */
 	if (EXT_PHY == priv->phy_ext) {

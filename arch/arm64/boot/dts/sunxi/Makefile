@@ -1,5 +1,6 @@
 dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h616-orangepi-zero3.dtb
 dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h616-bananapi-m4berry.dtb
+dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h616-bananapi-m4zero.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)

@@ -748,12 +748,15 @@
 			compatible = "allwinner,sunxi-pwm5";
 			reg = <0x0 0x0300a015 0x0 0x4>;
 			reg_base = <0x0300a000>;
-			status = "disabled";
+			pinctrl-names = "active", "sleep";
+			pinctrl-0 = <&pwm5_pin_a>;
+			pinctrl-1 = <&pwm5_pin_b>;
+			status = "okay";
 		};
 
 		ac200 {
 			compatible = "allwinner,sunxi-ac200";
-			status = "disabled";
+			status = "okay";
 			tv_used = <0x0>;
 			tv_twi_used = <0x0>;
 			tv_twi_id = <0x3>;
@@ -902,13 +905,13 @@
 				phandle = <0x28>;
 			};
 
-			uart1-ph-pins {
+			uart1-pg-pins {
 				pins = "PG6", "PG7", "PG8", "PG9";
 				function = "uart1";
 				phandle = <0x2b>;
 			};
 
-			uart1-ph-sleep {
+			uart1-pg-sleep {
 				pins = "PG6", "PG7", "PG8", "PG9";
 				function = "gpio_in";
 				phandle = <0x2c>;
@@ -926,26 +929,26 @@
 				phandle = <0x2e>;
 			};
 
-			uart3-ph-pins {
-				pins = "PI9", "PI10";
+			uart3-pi-pins {
+				pins = "PI9", "PI10", "PI1", "PI12";
 				function = "uart3";
 				phandle = <0x2f>;
 			};
 
-			uart3-ph-sleep {
-				pins = "PI9", "PI10";
+			uart3-pi-sleep {
+				pins = "PI9", "PI10", "PI1", "PI12";
 				function = "gpio_in";
 				phandle = <0x30>;
 			};
 
-			uart4-ph-pins {
-				pins = "PI13", "PI14";
+			uart4-pi-pins {
+				pins = "PI13", "PI14", "PI15", "PI16";
 				function = "uart4";
 				phandle = <0x31>;
 			};
 
-			uart4-ph-sleep {
-				pins = "PI13", "PI14";
+			uart4-pi-sleep {
+				pins = "PI13", "PI14", "PI15", "PI16";
 				function = "gpio_in";
 				phandle = <0x32>;
 			};
@@ -991,7 +994,7 @@
 			};
 
 			twi1@0 {
-				pins = "PH0", "PH1";
+				pins = "PI7", "PI8";
 				function = "twi1";
 				drive-strength = <0xa>;
 				bias-pull-up;
@@ -999,7 +1002,7 @@
 			};
 
 			twi1@1 {
-				pins = "PH0", "PH1";
+				pins = "PI7", "PI8";
 				function = "gpio_in";
 				phandle = <0x39>;
 			};
@@ -1084,7 +1087,7 @@
 			};
 
 			spi1@2 {
-				pins = "PH6", "PH7", "PH8", "PH9";
+				pins = "PH5", "PH6", "PH7", "PH8", "PH9";
 				function = "gpio_in";
 				drive-strength = <0x14>;
 				phandle = <0x47>;
@@ -1104,6 +1107,19 @@
 				phandle = <0x60>;
 			};
 
+			gmac1_pin_a: gmac1@0 {
+				pins = "PA0", "PA1", "PA2", "PA3", "PA4", "PA5", "PA6", "PA7", "PA8", "PA9";
+				function = "gmac1";
+				drive-strength = <0x0a>;
+				bias-pull-up;
+			};
+
+			gmac1_pin_b: gmac1@1 {
+				pins = "PA0", "PA1", "PA2", "PA3", "PA4", "PA5", "PA6", "PA7", "PA8", "PA9";
+				function = "gpio_in";
+				drive-strength = <0x0a>;
+			};
+
 			pwm1_pin_a: pwm1@0 {
 				pins = "PG19";
 				function = "pwm1";
@@ -1117,14 +1133,14 @@
 			};
 
 			pwm2_pin_a: pwm2@0 {
-				pins = "PH2";
+				pins = "PI12";
 				function = "pwm2";
 				drive-strength = <10>;
 				bias-pull-up;
 			};
 
 			pwm2_pin_b: pwm2@1 {
-				pins = "PH2";
+				pins = "PI12";
 				function = "gpio_in";
 			};
 
@@ -1149,6 +1165,18 @@
 
 			pwm4_pin_b: pwm4@1 {
 				pins = "PH1";
+				function = "gpio_in";
+			};
+
+			pwm5_pin_a: pwm5@0 {
+				pins = "PA12";
+				function = "pwm5";
+				drive-strength = <0x0a>;
+				bias-pull-up;
+			};
+
+			pwm5_pin_b: pwm5@1 {
+				pins = "PA12";
 				function = "gpio_in";
 			};
 
@@ -1421,7 +1449,7 @@
 			sunxi-dly-52M-ddr4 = <0x1 0x0 0x0 0x0 0x2>;
 			sunxi-dly-104M = <0x1 0x0 0x0 0x0 0x1>;
 			sunxi-dly-208M = <0x1 0x0 0x0 0x0 0x1>;
-			status = "disabled";
+			status = "okay";
 			no-sd;
 			sd-uhs-sdr12;
 			sd-uhs-sdr25;
@@ -1495,7 +1523,7 @@
 			uart1_port = <0x1>;
 			uart1_type = <0x4>;
 			sunxi,uart-fifosize = <0x100>;
-			status = "disabled";
+			status = "okay";
 			pinctrl-names = "default", "sleep";
 			pinctrl-0 = <0x2b>;
 			pinctrl-1 = <0x2c>;
@@ -1586,12 +1614,6 @@
 			pinctrl-names = "default", "sleep";
 			twi_drv_used = <0x1>;
 			phandle = <0xa0>;
-
-			eeprom@50 {
-				compatible = "atmel,24c16";
-				reg = <0x50>;
-				status = "disabled";
-			};
 		};
 
 		twi@5002400 {
@@ -2012,6 +2034,10 @@
 			tdm_num = <0x0>;
 			tx_pin = <0x0>;
 			rx_pin = <0x0>;
+			pinctrl_used;
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <0x8c 0x8d 0x8e>;
+			pinctrl-1 = <0x8f>;
 			phandle = <0x54>;
 		};
 
@@ -2068,6 +2094,10 @@
 			tdm_num = <0x3>;
 			tx_pin = <0x0>;
 			rx_pin = <0x0>;
+			pinctrl_used;
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <0x90 0x91 0x92>;
+			pinctrl-1 = <0x93>;
 			phandle = <0x5b>;
 		};
 
@@ -2242,34 +2272,34 @@
 			compatible = "allwinner,sunxi-init-gpio";
 			status = "disabled";
 			gpio_num = <0x1c>;
-			gpio_pin_1 = <0x23 0x6 0x0 0x0>;
-			gpio_pin_2 = <0x23 0x6 0x1 0x0>;
-			gpio_pin_3 = <0x23 0x6 0x2 0x0>;
-			gpio_pin_4 = <0x23 0x6 0x3 0x0>;
-			gpio_pin_5 = <0x23 0x6 0x4 0x0>;
-			gpio_pin_6 = <0x23 0x6 0x5 0x0>;
-			gpio_pin_7 = <0x23 0x6 0x6 0x0>;
-			gpio_pin_8 = <0x23 0x6 0x7 0x0>;
-			gpio_pin_9 = <0x23 0x6 0x8 0x0>;
-			gpio_pin_10 = <0x23 0x6 0x9 0x0>;
-			gpio_pin_11 = <0x23 0x6 0xa 0x0>;
-			gpio_pin_12 = <0x23 0x6 0xb 0x0>;
-			gpio_pin_13 = <0x23 0x6 0xc 0x0>;
-			gpio_pin_14 = <0x23 0x6 0xd 0x0>;
-			gpio_pin_15 = <0x23 0x6 0xe 0x0>;
-			gpio_pin_16 = <0x23 0x6 0xf 0x0>;
-			gpio_pin_17 = <0x23 0x6 0x10 0x0>;
-			gpio_pin_18 = <0x23 0x6 0x11 0x0>;
-			gpio_pin_19 = <0x23 0x6 0x12 0x0>;
-			gpio_pin_20 = <0x23 0x6 0x13 0x0>;
-			gpio_pin_21 = <0x23 0x7 0x2 0x0>;
-			gpio_pin_22 = <0x23 0x7 0x3 0x0>;
-			gpio_pin_23 = <0x23 0x7 0x4 0x0>;
-			gpio_pin_24 = <0x23 0x7 0x5 0x0>;
-			gpio_pin_25 = <0x23 0x7 0x6 0x0>;
-			gpio_pin_26 = <0x23 0x7 0x7 0x0>;
-			gpio_pin_27 = <0x23 0x7 0x8 0x0>;
-			gpio_pin_28 = <0x23 0x7 0x9 0x0>;
+			gpio_pin_1 = <0x23 0x8 0x6 0x0>;
+			gpio_pin_2 = <0x23 0x8 0x5 0x0>;
+			gpio_pin_3 = <0x23 0x8 0xc 0x0>;
+			gpio_pin_4 = <0x23 0x7 0x2 0x0>;
+			gpio_pin_5 = <0x23 0x7 0x3 0x0>;
+			gpio_pin_6 = <0x23 0x8 0xb 0x0>;
+			gpio_pin_7 = <0x23 0x7 0x7 0x0>;
+			gpio_pin_8 = <0x23 0x7 0x8 0x0>;
+			gpio_pin_9 = <0x23 0x7 0x6 0x0>;
+			gpio_pin_10 = <0x23 0x8 0x8 0x0>;
+			gpio_pin_11 = <0x23 0x8 0xa 0x0>;
+			gpio_pin_12 = <0x23 0x8 0x9 0x0>;
+			gpio_pin_13 = <0x23 0x7 0xa 0x0>;
+			gpio_pin_14 = <0x23 0x8 0x2 0x0>;
+			gpio_pin_15 = <0x23 0x8 0x0 0x0>;
+			gpio_pin_16 = <0x23 0x8 0x3 0x0>;
+			gpio_pin_17 = <0x23 0x8 0x4 0x0>;
+			gpio_pin_18 = <0x23 0x2 0x7 0x0>;
+			gpio_pin_19 = <0x23 0x7 0x4 0x0>;
+			gpio_pin_20 = <0x23 0x8 0x7 0x0>;
+			gpio_pin_21 = <0x23 0x7 0x9 0x0>;
+			gpio_pin_22 = <0x23 0x7 0x5 0x0>;
+			gpio_pin_23 = <0x23 0x2 0x2 0x0>;
+			gpio_pin_24 = <0x23 0x8 0x10 0x0>;
+			gpio_pin_25 = <0x23 0x8 0xf 0x0>;
+			gpio_pin_26 = <0x23 0x8 0x1 0x0>;
+			gpio_pin_27 = <0x23 0x8 0xe 0x0>;
+			gpio_pin_28 = <0x23 0x8 0xd 0x0>;
 			phandle = <0xbb>;
 		};
 
@@ -2311,7 +2341,12 @@
 			gmac-power0;
 			gmac-power1;
 			gmac-power2;
-			status = "disabled";
+			status = "okay";
+			pinctrl-0 = <&gmac1_pin_a>;
+			pinctrl-1 = <&gmac1_pin_b>;
+			pinctrl-names = "default", "sleep";
+			tx-delay = <0x07>;
+			rx-delay = <0x1f>;
 			phandle = <0xbd>;
 		};
 
@@ -2544,7 +2579,7 @@
 			clocks = <0xd 0x8 0xa 0xd 0x7>;
 			clock-names = "bus", "pclk", "mclk";
 			resets = <0xd 0x3>;
-			status = "okay";
+			status = "disabled";
 			s_cir0_used = <0x1>;
 			pinctrl-names = "default", "sleep";
 			pinctrl-0 = <0x62>;
@@ -2574,7 +2609,7 @@
 		rfkill {
 			compatible = "allwinner,sunxi-rfkill";
 			status = "okay";
-			chip_en;
+			chip_en = <0x23 0x6 0x12 0x0>;
 			power_en;
 			pinctrl-0;
 			pinctrl-names;
@@ -2585,8 +2620,9 @@
 				compatible = "allwinner,sunxi-wlan";
 				wlan_busnum = <0x1>;
 				wlan_power;
+				//wlan_regon = <0x23 0x6 0x12 0x0>;
 				wlan_regon;
-				wlan_hostwake;
+				wlan_hostwake = <0x23 0x6 0x0f 0x0>;
 				wakeup-source;
 				phandle = <0xcf>;
 			};
@@ -2594,6 +2630,7 @@
 			bt {
 				compatible = "allwinner,sunxi-bt";
 				bt_power;
+				//bt_rst_n = <0x23 0x6 0x13 0x1>;
 				bt_rst_n;
 				phandle = <0xd0>;
 			};
@@ -2610,7 +2647,7 @@
 
 		btlpm {
 			compatible = "allwinner,sunxi-btlpm";
-			status = "disabled";
+			status = "okay";
 			uart_index = <0x1>;
 			bt_wake = <0x23 0x6 0x11 0x0>;
 			bt_hostwake = <0x23 0x6 0x10 0x0>;
@@ -2888,14 +2925,6 @@
 		pinctrl-1 = <0x77>;
 	};
 
-	wm8960_mclk {
-		compatible = "fixed-clock";
-		status = "disabled";
-		#clock-cells = <0x0>;
-		clock-frequency = <0xbb8000>;
-		phandle = <0x78>;
-	};
-
 	__symbols__ {
 		cpu0 = "/cpus/cpu@0";
 		CPU_SLEEP = "/cpus/idle-states/cpu-sleep";
@@ -2956,14 +2985,14 @@
 		nand0_pins_a = "/soc@3000000/pinctrl@300b000/nand0@0";
 		nand0_pins_b = "/soc@3000000/pinctrl@300b000/nand0@1";
 		nand0_pins_c = "/soc@3000000/pinctrl@300b000/nand0@2";
-		uart1_ph_pins = "/soc@3000000/pinctrl@300b000/uart1-ph-pins";
-		uart1_ph_sleep = "/soc@3000000/pinctrl@300b000/uart1-ph-sleep";
+		uart1_pg_pins = "/soc@3000000/pinctrl@300b000/uart1-pg-pins";
+		uart1_pg_sleep = "/soc@3000000/pinctrl@300b000/uart1-pg-sleep";
 		uart2_ph_pins = "/soc@3000000/pinctrl@300b000/uart2-ph-pins";
 		uart2_ph_sleep = "/soc@3000000/pinctrl@300b000/uart2-ph-sleep";
-		uart3_ph_pins = "/soc@3000000/pinctrl@300b000/uart3-ph-pins";
-		uart3_ph_sleep = "/soc@3000000/pinctrl@300b000/uart3-ph-sleep";
-		uart4_ph_pins = "/soc@3000000/pinctrl@300b000/uart4-ph-pins";
-		uart4_ph_sleep = "/soc@3000000/pinctrl@300b000/uart4-ph-sleep";
+		uart3_pi_pins = "/soc@3000000/pinctrl@300b000/uart3-pi-pins";
+		uart3_pi_sleep = "/soc@3000000/pinctrl@300b000/uart3-pi-sleep";
+		uart4_pi_pins = "/soc@3000000/pinctrl@300b000/uart4-pi-pins";
+		uart4_pi_sleep = "/soc@3000000/pinctrl@300b000/uart4-pi-sleep";
 		uart5_ph_pins = "/soc@3000000/pinctrl@300b000/uart5-ph-pins";
 		uart5_ph_sleep = "/soc@3000000/pinctrl@300b000/uart5-ph-sleep";
 		s_cir0_pins_a = "/soc@3000000/pinctrl@300b000/s_cir0@0";
@@ -2986,8 +3015,12 @@
 		spi1_pins_c = "/soc@3000000/pinctrl@300b000/spi1@2";
 		gmac0_pins_a = "/soc@3000000/pinctrl@300b000/gmac0@0";
 		gmac0_pins_b = "/soc@3000000/pinctrl@300b000/gmac0@1";
-		pwm1_pin_a = "/soc@3000000/pinctrl@300b000/pwm1@0";
-		pwm1_pin_b = "/soc@3000000/pinctrl@300b000/pwm1@1";
+		gmac1_pins_a = "/soc@3000000/pinctrl@300b000/gmac1@0";
+		gmac1_pins_b = "/soc@3000000/pinctrl@300b000/gmac1@1";
+		pwm2_pin_a = "/soc@3000000/pinctrl@300b000/pwm2@0";
+		pwm2_pin_b = "/soc@3000000/pinctrl@300b000/pwm2@1";
+		pwm5_pin_a = "/soc@3000000/pinctrl@300b000/pwm5@0";
+		pwm5_pin_b = "/soc@3000000/pinctrl@300b000/pwm5@1";
 		spdif_pins_a = "/soc@3000000/pinctrl@300b000/spdif@0";
 		spdif_pins_b = "/soc@3000000/pinctrl@300b000/spdif_sleep@0";
 		ahub_daudio0_pins_a = "/soc@3000000/pinctrl@300b000/ahub_daudio0@0";
@@ -3110,6 +3143,5 @@
 		cpu_threshold = "/thermal-zones/cpu_thermal_zone/trips/trip-point@0";
 		cpu_target = "/thermal-zones/cpu_thermal_zone/trips/trip-point@1";
 		cpu_crit = "/thermal-zones/cpu_thermal_zone/trips/cpu_crit@0";
-		wm8960_mclk = "/wm8960_mclk";
 	};
 };

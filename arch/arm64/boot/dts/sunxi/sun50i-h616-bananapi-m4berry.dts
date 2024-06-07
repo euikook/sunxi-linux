@@ -2888,14 +2888,6 @@
 		pinctrl-1 = <0x77>;
 	};
 
-	wm8960_mclk {
-		compatible = "fixed-clock";
-		status = "disabled";
-		#clock-cells = <0x0>;
-		clock-frequency = <0xbb8000>;
-		phandle = <0x78>;
-	};
-
 	__symbols__ {
 		cpu0 = "/cpus/cpu@0";
 		CPU_SLEEP = "/cpus/idle-states/cpu-sleep";
@@ -3110,6 +3102,5 @@
 		cpu_threshold = "/thermal-zones/cpu_thermal_zone/trips/trip-point@0";
 		cpu_target = "/thermal-zones/cpu_thermal_zone/trips/trip-point@1";
 		cpu_crit = "/thermal-zones/cpu_thermal_zone/trips/cpu_crit@0";
-		wm8960_mclk = "/wm8960_mclk";
 	};
 };

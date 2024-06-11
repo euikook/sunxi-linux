@@ -2890,7 +2890,7 @@
 
 	gpio-keys {
 		compatible = "gpio-keys";
-		status = "okay";
+		status = "disabled";
 		autorepeat;
 
 		power {

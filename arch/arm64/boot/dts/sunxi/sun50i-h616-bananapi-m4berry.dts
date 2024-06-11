@@ -915,37 +915,47 @@
 			};
 
 			uart2-ph-pins {
-				pins = "PH5", "PH6";
+				pins = "PH5", "PH6", "PH7", "PH8";
 				function = "uart2";
 				phandle = <0x2d>;
 			};
 
 			uart2-ph-sleep {
-				pins = "PH5", "PH6";
+				pins = "PH5", "PH6", "PH7", "PH8";
 				function = "gpio_in";
 				phandle = <0x2e>;
 			};
 
-			uart3-ph-pins {
-				pins = "PI9", "PI10";
+			uart2-pg-pins {
+				pins = "PG15", "PG16", "PG17", "PG18";
+				function = "uart2";
+			};
+
+			uart2-pg-sleep {
+				pins = "PG15", "PG16", "PG17", "PG18";
+				function = "gpio_in";
+			};
+
+			uart3-pi-pins {
+				pins = "PI9", "PI10", "PI11", "PI12";
 				function = "uart3";
 				phandle = <0x2f>;
 			};
 
-			uart3-ph-sleep {
-				pins = "PI9", "PI10";
+			uart3-pi-sleep {
+				pins = "PI9", "PI10", "PI11", "PI12";
 				function = "gpio_in";
 				phandle = <0x30>;
 			};
 
-			uart4-ph-pins {
-				pins = "PI13", "PI14";
+			uart4-pi-pins {
+				pins = "PI13", "PI14", "PI15", "PI16";
 				function = "uart4";
 				phandle = <0x31>;
 			};
 
-			uart4-ph-sleep {
-				pins = "PI13", "PI14";
+			uart4-pi-sleep {
+				pins = "PI13", "PI14", "PI15", "PI16";
 				function = "gpio_in";
 				phandle = <0x32>;
 			};
@@ -2952,10 +2962,12 @@
 		uart1_ph_sleep = "/soc@3000000/pinctrl@300b000/uart1-ph-sleep";
 		uart2_ph_pins = "/soc@3000000/pinctrl@300b000/uart2-ph-pins";
 		uart2_ph_sleep = "/soc@3000000/pinctrl@300b000/uart2-ph-sleep";
-		uart3_ph_pins = "/soc@3000000/pinctrl@300b000/uart3-ph-pins";
-		uart3_ph_sleep = "/soc@3000000/pinctrl@300b000/uart3-ph-sleep";
-		uart4_ph_pins = "/soc@3000000/pinctrl@300b000/uart4-ph-pins";
-		uart4_ph_sleep = "/soc@3000000/pinctrl@300b000/uart4-ph-sleep";
+		uart2_pg_pins = "/soc@3000000/pinctrl@300b000/uart2-pg-pins";
+		uart2_pg_sleep = "/soc@3000000/pinctrl@300b000/uart2-pg-sleep";
+		uart3_pi_pins = "/soc@3000000/pinctrl@300b000/uart3-pi-pins";
+		uart3_pi_sleep = "/soc@3000000/pinctrl@300b000/uart3-pi-sleep";
+		uart4_pi_pins = "/soc@3000000/pinctrl@300b000/uart4-pi-pins";
+		uart4_pi_sleep = "/soc@3000000/pinctrl@300b000/uart4-pi-sleep";
 		uart5_ph_pins = "/soc@3000000/pinctrl@300b000/uart5-ph-pins";
 		uart5_ph_sleep = "/soc@3000000/pinctrl@300b000/uart5-ph-sleep";
 		s_cir0_pins_a = "/soc@3000000/pinctrl@300b000/s_cir0@0";

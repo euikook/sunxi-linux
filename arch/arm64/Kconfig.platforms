@@ -65,6 +65,32 @@ endif
 
 # Select the SoC with specific arch and wafer
 
+if ARCH_SUN50IW9
+choice
+	prompt "Select the Board with wafer ARCH_SUN50IW9"
+	help
+	  Select the SoC with wafer ARCH_SUN50IW9
+
+config BOARD_BANANAPI_M4BERRY
+	bool "Bananapi M4 Berry Single Board Computer"
+	help
+	  This enables support for the board Bananapi M4 Berry of Sinovoip
+	  which is based on Allwinner SUN50IW9(H618) SoC.
+
+config BOARD_BANANAPI_M4ZERO
+	bool "Bananapi M4 Zero Single Board Computer"
+	help
+	  This enables support for the board Bananapi M4 Zero of Sinovoip
+	  which is based on Allwinner SUN50IW9(H618) SoC.
+
+config BOARD_ORANGEPI_ZERO3
+	bool "OrangePi Zero3 Single Board Computer"
+	help
+	  This enables support for the OrangePi Zero3 of Xunlong
+	  which is based on Allwinner SUN50IW9(H618) SoC.
+
+endchoice
+endif
 
 if ARCH_SUN50IW10
 choice

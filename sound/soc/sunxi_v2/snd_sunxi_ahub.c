@@ -39,7 +39,7 @@ static int sunxi_ahub_dai_startup(struct snd_pcm_substream *substream,
 	struct regmap *regmap = NULL;
 	unsigned int apb_num, tdm_num;
 
-	SND_LOG_DEBUG(HLOG, "\n");
+	pr_err("BPI, %s\n", __func__);
 
 	regmap = ahub_info->mem_info.regmap;
 	apb_num = ahub_info->dts_info.apb_num;
@@ -938,7 +938,7 @@ static void sunxi_ahub_dai_shutdown(struct snd_pcm_substream *substream,
 	struct regmap *regmap = NULL;
 	unsigned int apb_num, tdm_num;
 
-	SND_LOG_DEBUG(HLOG, "\n");
+	pr_err("BPI, %s\n", __func__);
 
 	regmap = ahub_info->mem_info.regmap;
 	apb_num = ahub_info->dts_info.apb_num;

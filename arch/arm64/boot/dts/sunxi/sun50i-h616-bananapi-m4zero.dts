@@ -757,8 +757,8 @@
 		ac200 {
 			compatible = "allwinner,sunxi-ac200";
 			status = "okay";
-			tv_used = <0x0>;
-			tv_twi_used = <0x0>;
+			tv_used = <0x1>;
+			tv_twi_used = <0x1>;
 			tv_twi_id = <0x3>;
 			tv_twi_addr = <0x10>;
 			tv_pwm_ch = <0x5>;
@@ -2345,8 +2345,8 @@
 			pinctrl-0 = <&gmac1_pin_a>;
 			pinctrl-1 = <&gmac1_pin_b>;
 			pinctrl-names = "default", "sleep";
-			tx-delay = <0x07>;
-			rx-delay = <0x1f>;
+			tx-delay = <0x0>;
+			rx-delay = <0x0>;
 			phandle = <0xbd>;
 		};
 

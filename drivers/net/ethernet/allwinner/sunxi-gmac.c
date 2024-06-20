@@ -1221,7 +1221,7 @@ out:
 
 static void geth_check_addr(struct net_device *ndev, unsigned char *mac)
 {
-	int i, j;
+	int i;
 	char *p = mac;
 	struct geth_priv *priv = netdev_priv(ndev);
 

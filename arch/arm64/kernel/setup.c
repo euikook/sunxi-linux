@@ -56,6 +56,14 @@ static struct resource *standard_resources;
 
 phys_addr_t __fdt_pointer __initdata;
 
+#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
+const char *machine_name = "Bananapi BPI Ref.";
+EXPORT_SYMBOL(machine_name);
+
+unsigned int system_rev = 0;
+EXPORT_SYMBOL(system_rev);
+#endif
+
 /*
  * Standard memory resources
  */
@@ -197,6 +205,16 @@ static void __init setup_machine_fdt(phys_addr_t dt_phys)
 
 	pr_info("Machine model: %s\n", name);
 	dump_stack_set_arch_desc("%s (DT)", name);
+
+	/* bpi */
+#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
+	machine_name = name;
+	if (!strcmp(machine_name, "Bananapi BPI-M4Berry")) {
+		system_rev = 0x0002;
+	} else if (!strcmp(machine_name, "Bananapi BPI-M4Zero")) {
+		system_rev = 0x0003;
+	}
+#endif
 }
 
 static void __init request_standard_resources(void)

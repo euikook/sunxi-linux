@@ -91,4 +91,9 @@ int sunxi_soc_is_secure(void);
 s32 sunxi_get_platform(s8 *buf, s32 size);
 s32 sunxi_efuse_readn(s8 *key_name, void *buf, u32 n);
 
+#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
+extern const char *machine_name;
+extern unsigned int system_rev;
+#endif
+
 #endif  /* __SUNXI_MACH_SUNXI_CHIP_H */

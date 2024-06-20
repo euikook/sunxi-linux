@@ -4,7 +4,7 @@
 	interrupt-parent = <0x1>;
 	#address-cells = <0x2>;
 	#size-cells = <0x2>;
-	model = "Bananapi M4Berry";
+	model = "Bananapi BPI-M4Berry";
 	compatible = "allwinner,h616", "arm,sun50iw9p1";
 
 	aliases {

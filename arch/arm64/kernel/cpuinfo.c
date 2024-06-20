@@ -24,6 +24,7 @@
 #include <linux/sched.h>
 #include <linux/smp.h>
 #include <linux/delay.h>
+#include <linux/sunxi-sid.h>
 
 /*
  * In case the boot CPU is hotpluggable, we record its initial state and
@@ -128,6 +129,10 @@ static int c_show(struct seq_file *m, void *v)
 {
 	int i, j;
 	bool compat = personality(current->personality) == PER_LINUX32;
+#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
+        int databuf[4] = {0};
+        char tmpbuf[129] = {0};
+#endif
 
 	for_each_online_cpu(i) {
 		struct cpuinfo_arm64 *cpuinfo = &per_cpu(cpu_data, i);
@@ -179,6 +184,22 @@ static int c_show(struct seq_file *m, void *v)
 		seq_printf(m, "CPU revision\t: %d\n\n", MIDR_REVISION(midr));
 	}
 
+#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
+	/* platform */
+        sunxi_get_platform(tmpbuf, 129);
+        seq_printf(m, "CPU Platform\t: %s\n", tmpbuf);
+
+	/* chipid */
+        sunxi_get_soc_chipid((u8 *)databuf);
+        for (i = 0; i < 4; i++)
+                sprintf(tmpbuf + i*8, "%08x", databuf[i]);
+        tmpbuf[128] = 0;
+        seq_printf(m, "Serial\t\t: %s\n", tmpbuf);
+
+	seq_printf(m, "Hardware\t: %s\n", machine_name);
+	seq_printf(m, "Revision\t: %04x\n\n", system_rev);
+
+#endif
 	return 0;
 }
 

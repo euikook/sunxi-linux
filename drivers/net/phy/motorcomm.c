@@ -84,7 +84,7 @@ static int link_mode_8614[4] = {0}; //0: no link; 1: utp; 32: fiber. traced that
 static unsigned int yt_mport_base_phy_addr = 0xff; //0xff: invalid; for 8618
 static unsigned int yt_mport_base_phy_addr_8614 = 0xff; //0xff: invalid;
 
-static int yt8511_config_out_125m(struct mii_bus *bus, int phy_id);
+int yt8511_config_out_125m(struct mii_bus *bus, int phy_id);
 static int ytphy_mii_wr_ext(struct mii_bus *bus, int phy_id, u32 regnum, u16 val);
 
 static int phy_yt8531_led_fixup(struct mii_bus *bus, int addr)

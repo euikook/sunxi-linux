@@ -17,4 +17,16 @@
 			status = "okay";
 		};
 	};
+
+	fragment@2 {
+		target-path = "/";
+
+		__overlay__ {
+			beeper: beeper {
+				compatible = "pwm-beeper";
+				pwms = <&pwm 2 1000000 0>;
+				status = "okay";
+			};
+		};
+	};
 };

@@ -7,6 +7,15 @@ menu "Character devices"
 
 source "drivers/tty/Kconfig"
 
+config DEVGPIOMEM
+        tristate "/dev/gpiomem rootless GPIO access via mmap()"
+        default y
+        help
+          Provides users with root-free access to the GPIO registers.
+          Calling mmap(/dev/gpiomem) will map the GPIO register page
+          to the user's pointer. This drvier can allow to access
+          gpio memory area in user account.
+
 config DEVMEM
 	bool "/dev/mem virtual device support"
 	default y

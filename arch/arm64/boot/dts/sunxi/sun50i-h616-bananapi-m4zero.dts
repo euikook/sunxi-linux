@@ -367,6 +367,12 @@
 		phandle = <0x7a>;
 	};
 
+	gpiomem {
+                compatible = "allwinner, gpiomem";
+                reg = <0x0 0x0300b000 0x0 0x400>;      /* GPIO banks */
+                status = "okay";
+        };
+
 	soc@3000000 {
 		compatible = "simple-bus";
 		#address-cells = <0x2>;
@@ -694,6 +700,7 @@
 			pwm-base = <0>;
 			sunxi-pwms = <&pwm0>, <&pwm1>, <&pwm2>, <&pwm3>,
 				<&pwm4>, <&pwm5>;
+			#pwm-cells = <3>;
 			status = "okay";
 		};
 
@@ -744,6 +751,7 @@
 			status = "disabled";
 		};
 
+		/* ephy ac200 */
 		pwm5: pwm5@300a015 {
 			compatible = "allwinner,sunxi-pwm5";
 			reg = <0x0 0x0300a015 0x0 0x4>;
@@ -1079,7 +1087,7 @@
 			};
 
 			spi1@1 {
-				pins = "PH9";
+				pins = "PH5", "PH9";
 				function = "spi1";
 				drive-strength = <0x14>;
 				bias-pull-up;
@@ -1849,15 +1857,6 @@
 			/*spi_dbi_enable = <0x0>;*/
 			phandle = <0xaa>;
 
-			spi_board1@0 {
-				device_type = "spi_board1";
-				compatible = "linux,spidev";
-				spi-max-frequency = <0x5f5e100>;
-				reg = <0x0>;
-				spi-rx-bus-width = <0x1>;
-				spi-tx-bus-width = <0x1>;
-				status = "disabled";
-			};
 		};
 
 		ts0@5060000 {
@@ -2821,7 +2820,7 @@
 
 	thermal-zones {
 
-		cpu_thermal_zone {
+		cpu_thermal: cpu_thermal_zone {
 			polling-delay-passive = <0x1f4>;
 			polling-delay = <0x3e8>;
 			thermal-sensors = <0x72 0x2>;
@@ -2852,7 +2851,7 @@
 				};
 			};
 
-			cooling-maps {
+			cpu_cooling_maps: cooling-maps {
 
 				map0 {
 					trip = <0x73>;
@@ -2938,6 +2937,7 @@
 		reg_pio1_8 = "/pio-18";
 		reg_pio3_3 = "/pio-33";
 		dram = "/dram";
+		gpiomem = "/gpiomem";
 		soc = "/soc@3000000";
 		disp = "/soc@3000000/disp@1000000";
 		ve = "/soc@3000000/ve@1c0e000";

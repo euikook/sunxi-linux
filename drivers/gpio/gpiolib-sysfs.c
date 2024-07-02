@@ -279,10 +279,12 @@ static ssize_t edge_store(struct device *dev,
 
 	mutex_lock(&data->mutex);
 
+#if !defined(CONFIG_BOARD_BANANAPI_M4ZERO) && !defined(CONFIG_BOARD_BANANAPI_M4ZERO)
 	if (flags == data->irq_flags) {
 		status = size;
 		goto out_unlock;
 	}
+#endif
 
 	if (data->irq_flags)
 		gpio_sysfs_free_irq(dev);

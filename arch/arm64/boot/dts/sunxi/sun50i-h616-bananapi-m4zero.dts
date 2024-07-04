@@ -1319,6 +1319,14 @@
 				allwinner,pull = <0x1>;
 				phandle = <0x77>;
 			};
+
+			clk_losc_pins_a: losc_out@0 {
+				allwinner,pins = "PG10";
+				allwinner,function = "x32kfout";
+				allwinner,muxsel = <0x3>;
+				allwinner,drive = <0x2>;
+				allwinner,pull = <0x1>;
+			};
 		};
 
 		pinctrl@7022000 {
@@ -2608,19 +2616,20 @@
 		rfkill {
 			compatible = "allwinner,sunxi-rfkill";
 			status = "okay";
-			chip_en = <0x23 0x6 0x12 0x0>;
+			chip_en;
 			power_en;
-			pinctrl-0;
-			pinctrl-names;
+			pinctrl-0 = <&clk_losc_pins_a>;
+			pinctrl-names = "default";
 			clocks;
 			phandle = <0xce>;
 
 			wlan {
 				compatible = "allwinner,sunxi-wlan";
+				clocks = <0xe 0x4>;
+				clock-names = "osc32k-out";
 				wlan_busnum = <0x1>;
 				wlan_power;
-				//wlan_regon = <0x23 0x6 0x12 0x0>;
-				wlan_regon;
+				wlan_regon = <0x23 0x6 0x12 0x0>;
 				wlan_hostwake = <0x23 0x6 0x0f 0x0>;
 				wakeup-source;
 				phandle = <0xcf>;
@@ -2628,9 +2637,10 @@
 
 			bt {
 				compatible = "allwinner,sunxi-bt";
+				clocks = <0xe 0x4>;
+				clock-names = "osc32k-out";
 				bt_power;
-				//bt_rst_n = <0x23 0x6 0x13 0x1>;
-				bt_rst_n;
+				bt_rst_n = <0x23 0x6 0x13 0x1>;
 				phandle = <0xd0>;
 			};
 		};
@@ -2646,7 +2656,7 @@
 
 		btlpm {
 			compatible = "allwinner,sunxi-btlpm";
-			status = "okay";
+			status = "disabled";
 			uart_index = <0x1>;
 			bt_wake = <0x23 0x6 0x11 0x0>;
 			bt_hostwake = <0x23 0x6 0x10 0x0>;
@@ -3037,6 +3047,7 @@
 		ahub_daudio3_pins_d = "/soc@3000000/pinctrl@300b000/ahub_daudio3_sleep@0";
 		standby_red = "/soc@3000000/pinctrl@300b000/standby@0";
 		standby_gpiokey = "/soc@3000000/pinctrl@300b000/standby@1";
+		clk_losc_pins_a = "/soc@3000000/pinctrl@300b000/losc_out@0";
 		r_pio = "/soc@3000000/pinctrl@7022000";
 		s_twi0_pins_a = "/soc@3000000/pinctrl@7022000/s_twi0@0";
 		s_twi0_pins_b = "/soc@3000000/pinctrl@7022000/s_twi0@1";

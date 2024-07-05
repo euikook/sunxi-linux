@@ -321,15 +321,9 @@ int sunxi_bt_init(struct platform_device *pdev)
 		dev_err(dev, "sunxi-bluetooth register sysfs create group failed!\n");
 		return ret;
 	}
-
-	ret = gpio_direction_output(data->gpio_bt_rst, !data->gpio_bt_rst_assert);
-                if (ret < 0) {
-                        dev_err(dev, "can't request output direction on bt_rst gpio %d\n",
-                                data->gpio_bt_rst);
-                        return ret;
-        }
-	data->power_state = 1;
 #endif
+
+	data->power_state = 0;
 	bluetooth_data = data;
 	return 0;
 

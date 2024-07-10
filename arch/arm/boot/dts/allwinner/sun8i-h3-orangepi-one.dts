@@ -146,6 +146,10 @@
 	};
 };
 
+&i2s2 {
+	status = "okay";
+};
+
 &mmc0 {
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
@@ -163,6 +167,10 @@
 
 &reg_usb0_vbus {
 	gpio = <&r_pio 0 2 GPIO_ACTIVE_HIGH>; /* PL2 */
+	status = "okay";
+};
+
+&sound_hdmi {
 	status = "okay";
 };
 
@@ -200,4 +208,11 @@
 	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
 	usb0_vbus-supply = <&reg_usb0_vbus>;
 	status = "okay";
+};
+
+&pio {
+        vcc-pa-supply = <&reg_vcc3v3>;
+        vcc-pc-supply = <&reg_vcc3v3>;
+        vcc-pd-supply = <&reg_vcc3v3>;
+        vcc-pg-supply = <&reg_vcc3v3>;
 };

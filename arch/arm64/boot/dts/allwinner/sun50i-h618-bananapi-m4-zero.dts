@@ -18,12 +18,19 @@
 	compatible = "sinovoip,bpi-m4-zero", "allwinner,sun50i-h618";
 
 	aliases {
-		ethernet0 = &emac1;
 		serial0 = &uart0;
+		serial1 = &uart1;
+		serial2 = &uart2;
+		serial3 = &uart3;
+		serial4 = &uart4;
 		serial5 = &uart5;
+		i2c0 = &i2c0;
+		i2c1 = &i2c1;
+		i2c2 = &i2c2;
 		i2c3 = &i2c3;
 		i2c4 = &i2c4;
 		spi1 = &spi1;
+		ethernet0 = &emac1;
 	};
 
 	chosen {
@@ -79,6 +86,96 @@
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&reg_vcc5v>;
 	};
+
+	reg_vcc3v3: vcc3v3 {
+		/* SY8089 DC/DC converter */
+		compatible = "regulator-fixed";
+		regulator-name = "vcc-3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_dldo1>;
+		regulator-always-on;
+	};
+
+	reg_vcc1v8: vcc1v8 {
+		/* Always on 1.8V/300mA regulator for WiFi and BT IO */
+		compatible = "regulator-fixed";
+		regulator-name = "vcc-1v8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-always-on;
+		vin-supply = <&reg_aldo1>;
+	};
+
+	wifi_pwrseq: wifi-pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		clocks = <&rtc CLK_OSC32K_FANOUT>;
+		clock-names = "ext_clock";
+		reset-gpios = <&pio 6 18 GPIO_ACTIVE_LOW>; /* PG18 */
+		post-power-on-delay-ms = <200>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&clk_losc_32k_pin>;
+	};
+
+	ac200_pwm_clk: ac200_clk {
+		compatible = "pwm-clock";
+		#clock-cells = <0>;
+		// pwm5 period_ns = 500 > 334 for select 24M clock.
+		pwms = <&pwm 5 500 0>;
+		clock-frequency = <2000000>;
+		status = "okay";
+	};
+
+	soc {
+		pwm: pwm@300a000 {
+			compatible = "allwinner,sun50i-h616-pwm";
+			reg = <0x0300a000 0x400>;
+			clocks = <&osc24M>, <&ccu CLK_BUS_PWM>;
+			clock-names = "mod", "bus";
+			resets = <&ccu RST_BUS_PWM>;
+			pwm-number = <6>;
+			pwm-base = <0x0>;
+			sunxi-pwms = <&pwm0>, <&pwm1>, <&pwm2>, <&pwm3>, <&pwm4>, <&pwm5>;
+			#pwm-cells = <3>;
+			status = "okay";
+		};
+
+		pwm0: pwm0@0300a000 {
+			compatible = "allwinner,sunxi-pwm0";
+		};
+
+		pwm1: pwm1@0300a000 {
+			compatible = "allwinner,sunxi-pwm1";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm1_ph_pin>;
+		};
+
+		pwm2: pwm2@0300a000 {
+			compatible = "allwinner,sunxi-pwm2";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm2_ph_pin>;
+		};
+
+		pwm3: pwm3@0300a000 {
+			compatible = "allwinner,sunxi-pwm3";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm3_ph_pin>;
+		};
+
+		pwm4: pwm4@0300a000 {
+			compatible = "allwinner,sunxi-pwm4";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm4_ph_pin>;
+		};
+
+		pwm5: pwm5@0300a000 {
+			compatible = "allwinner,sunxi-pwm5";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm5_pin>;
+			clk_bypass_output = <0x1>;
+			status = "okay";
+		};
+	};
 };
 
 &cpu0 {
@@ -89,7 +186,6 @@
 	status = "okay";
 };
 
-/* Connected to an on-board RTL8821CU USB WiFi chip. */
 &ehci1 {
 	status = "okay";
 };
@@ -102,15 +198,32 @@
 	status = "okay";
 };
 
+&emac0 {
+	status = "disabled";
+};
+
 &emac1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&ext_rgmii_pins>;
-	phy-mode = "rgmii";
-	phy-handle = <&ext_rgmii_phy>;
+	pinctrl-0 = <&rmii_pins>;
+	phy-mode = "rmii";
+	phy-handle = <&rmii_phy>;
 	phy-supply = <&reg_dldo1>;
 	allwinner,rx-delay-ps = <3100>;
 	allwinner,tx-delay-ps = <700>;
-	status = "disabled";
+	status = "okay";
+};
+
+&mdio1 {
+	rmii_phy: ethernet-phy@1 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <1>;
+	};
+};
+
+&sid {
+	ephy_calibration: ephy-calibration@2c {
+		reg = <0x2c 0x2>;
+	};
 };
 
 &gpu {
@@ -134,19 +247,32 @@
 	status = "okay";
 };
 
-&mdio1 {
-	ext_rgmii_phy: ethernet-phy@1 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <1>;
-	};
-};
-
 &mmc0 {
 	vmmc-supply = <&reg_dldo1>;
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;	/* PF6 */
 	bus-width = <4>;
 	max-frequency = <50000000>;
 	status = "okay";
+};
+
+&mmc1 {
+	vmmc-supply = <&reg_vcc3v3>;
+	vqmmc-supply = <&reg_vcc1v8>;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc1_pins>;
+	bus-width = <4>;
+	non-removable;
+	mmc-ddr-1_8v;
+	status = "okay";
+
+	brcm: sdio-wifi@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+		interrupt-parent = <&pio>;
+		interrupts = <6 15 IRQ_TYPE_LEVEL_LOW>;  /* PG15 */
+		interrupt-names = "host-wake";
+	};
 };
 
 &mmc2 {
@@ -177,6 +303,74 @@
 	vcc-pg-supply = <&reg_dldo1>;
 	vcc-ph-supply = <&reg_dldo1>;
 	vcc-pi-supply = <&reg_dldo1>;
+
+        i2c0_pi_pins: i2c0-pi-pins {
+		pins = "PI5", "PI6";
+		function = "i2c0";
+	};
+
+	i2c1_pi_pins: i2c1-pi-pins {
+		pins = "PI7", "PI8";
+		function = "i2c1";
+	};
+
+	i2c2_pi_pins: i2c2-pi-pins {
+		pins = "PI9", "PI10";
+		function = "i2c2";
+	};
+
+	i2c3_pa_pins: i2c3-pa-pins {
+		pins = "PA10", "PA11";
+		function = "i2c3";
+		bias-pull-up;
+	};
+
+	i2c4_ph_pins: i2c4-ph-pins {
+		pins = "PH6", "PH7";
+		function = "i2c4";
+	};
+
+        uart3_pi_pins: uart3-pi-pins {
+		pins = "PI9", "PI10";
+		function = "uart3";
+	};
+
+        uart4_pi_pins: uart4-pi-pins {
+		pins = "PI13", "PI14";
+		function = "uart4";
+	};
+
+	pwm1_ph_pin: pwm1-ph-pin {
+		pins = "PH3";
+		function = "pwm1";
+	};
+
+	pwm2_ph_pin: pwm2-ph-pin {
+		pins = "PH2";
+		function = "pwm2";
+	};
+
+	pwm3_ph_pin: pwm3-ph-pin {
+		pins = "PH0";
+		function = "pwm3";
+	};
+
+	pwm4_ph_pin: pwm4-ph-pin {
+		pins = "PH1";
+		function = "pwm4";
+	};
+
+	pwm5_pin: pwm5-pin {
+		pins = "PA12";
+		function = "pwm5";
+	};
+
+	clk_losc_32k_pin: clk-losc-32k-pin {
+		pins = "PG10";
+		function = "clock";
+		drive-strength = <20>;
+		bias-pull-up;
+	};
 };
 
 &r_i2c {
@@ -247,6 +441,51 @@
 	};
 };
 
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pi_pins>;
+	status = "disabled";
+};
+
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pi_pins>;
+	status = "disabled";
+};
+
+&i2c2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c2_pi_pins>;
+	status = "disabled";
+};
+
+&i2c3 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3_pa_pins>;
+
+	ac200_x: mfd@10 {
+		compatible = "x-powers,ac200-sunxi";
+		reg = <0x10>;
+		clocks = <&ac200_pwm_clk>;
+		// ephy id
+		nvmem-cells = <&ephy_calibration>;
+		nvmem-cell-names = "calibration";
+
+		ac200_ephy: phy {
+			compatible = "x-powers,ac200-ephy-sunxi";
+			status = "okay";
+		};
+	};
+};
+
+&i2c4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c4_ph_pins>;
+	status = "disabled";
+};
+
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_ph_pins>;
@@ -256,13 +495,44 @@
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+	uart-has-rtscts;
 	status = "okay";
+
+	bluetooth {
+		compatible = "brcm,bcm43438-bt";
+		clocks = <&rtc CLK_OSC32K_FANOUT>;
+		clock-names = "lpo";
+		vbat-supply = <&reg_vcc3v3>;
+		vddio-supply = <&reg_vcc1v8>;
+		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>;
+		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>;
+		max-speed = <1500000>;
+        };
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart2_pins>;
+	status = "disabled";
+};
+
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart3_pi_pins>;
+	status = "disabled";
+};
+
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4_pi_pins>;
+	status = "disabled";
 };
 
 &uart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart5_pins>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usbotg {

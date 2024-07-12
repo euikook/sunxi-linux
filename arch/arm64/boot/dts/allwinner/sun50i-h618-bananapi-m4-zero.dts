@@ -48,16 +48,6 @@
 		};
 	};
 
-	gpio-keys {
-		compatible = "gpio-keys";
-
-		key-sw3 {
-			label = "sw3";
-			linux,code = <BTN_0>;
-			gpios = <&pio 2 7 GPIO_ACTIVE_LOW>;	/* PC7 */
-		};
-	};
-
 	leds {
 		compatible = "gpio-leds";
 

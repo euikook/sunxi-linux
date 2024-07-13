@@ -218,7 +218,7 @@
 
 &gpu {
 	mali-supply = <&reg_dcdc1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &hdmi {
@@ -234,7 +234,7 @@
 &ir {
 	pinctrl-names = "default";
 	pinctrl-0 = <&ir_rx_pin>;
-	status = "okay";
+	status = "disabled";
 };
 
 &mmc0 {
@@ -532,5 +532,23 @@
 
 &usbphy {
 	usb1_vbus-supply = <&reg_usb_vbus>;
+	status = "okay";
+};
+
+&codec {
+	allwinner,audio-routing =
+		"Line Out", "LINEOUT";
+	status = "okay";
+};
+
+&ahub_dam_plat {
+	status = "okay";
+};
+
+&ahub1_plat {
+	status = "okay";
+};
+
+&ahub1_mach {
 	status = "okay";
 };

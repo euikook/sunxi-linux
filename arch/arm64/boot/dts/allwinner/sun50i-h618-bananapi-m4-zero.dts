@@ -20,16 +20,7 @@
 	aliases {
 		serial0 = &uart0;
 		serial1 = &uart1;
-		serial2 = &uart2;
-		serial3 = &uart3;
-		serial4 = &uart4;
-		serial5 = &uart5;
-		i2c0 = &i2c0;
-		i2c1 = &i2c1;
-		i2c2 = &i2c2;
 		i2c3 = &i2c3;
-		i2c4 = &i2c4;
-		spi1 = &spi1;
 		ethernet0 = &emac1;
 	};
 
@@ -114,57 +105,6 @@
 		pwms = <&pwm 5 500 0>;
 		clock-frequency = <2000000>;
 		status = "okay";
-	};
-
-	soc {
-		pwm: pwm@300a000 {
-			compatible = "allwinner,sun50i-h616-pwm";
-			reg = <0x0300a000 0x400>;
-			clocks = <&osc24M>, <&ccu CLK_BUS_PWM>;
-			clock-names = "mod", "bus";
-			resets = <&ccu RST_BUS_PWM>;
-			pwm-number = <6>;
-			pwm-base = <0x0>;
-			sunxi-pwms = <&pwm0>, <&pwm1>, <&pwm2>, <&pwm3>, <&pwm4>, <&pwm5>;
-			#pwm-cells = <3>;
-			status = "okay";
-		};
-
-		pwm0: pwm0@0300a000 {
-			compatible = "allwinner,sunxi-pwm0";
-		};
-
-		pwm1: pwm1@0300a000 {
-			compatible = "allwinner,sunxi-pwm1";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pwm1_ph_pin>;
-		};
-
-		pwm2: pwm2@0300a000 {
-			compatible = "allwinner,sunxi-pwm2";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pwm2_ph_pin>;
-		};
-
-		pwm3: pwm3@0300a000 {
-			compatible = "allwinner,sunxi-pwm3";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pwm3_ph_pin>;
-		};
-
-		pwm4: pwm4@0300a000 {
-			compatible = "allwinner,sunxi-pwm4";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pwm4_ph_pin>;
-		};
-
-		pwm5: pwm5@0300a000 {
-			compatible = "allwinner,sunxi-pwm5";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pwm5_pin>;
-			clk_bypass_output = <0x1>;
-			status = "okay";
-		};
 	};
 };
 
@@ -294,65 +234,10 @@
 	vcc-ph-supply = <&reg_dldo1>;
 	vcc-pi-supply = <&reg_dldo1>;
 
-        i2c0_pi_pins: i2c0-pi-pins {
-		pins = "PI5", "PI6";
-		function = "i2c0";
-	};
-
-	i2c1_pi_pins: i2c1-pi-pins {
-		pins = "PI7", "PI8";
-		function = "i2c1";
-	};
-
-	i2c2_pi_pins: i2c2-pi-pins {
-		pins = "PI9", "PI10";
-		function = "i2c2";
-	};
-
 	i2c3_pa_pins: i2c3-pa-pins {
 		pins = "PA10", "PA11";
 		function = "i2c3";
 		bias-pull-up;
-	};
-
-	i2c4_ph_pins: i2c4-ph-pins {
-		pins = "PH6", "PH7";
-		function = "i2c4";
-	};
-
-        uart3_pi_pins: uart3-pi-pins {
-		pins = "PI9", "PI10";
-		function = "uart3";
-	};
-
-        uart4_pi_pins: uart4-pi-pins {
-		pins = "PI13", "PI14";
-		function = "uart4";
-	};
-
-	pwm1_ph_pin: pwm1-ph-pin {
-		pins = "PH3";
-		function = "pwm1";
-	};
-
-	pwm2_ph_pin: pwm2-ph-pin {
-		pins = "PH2";
-		function = "pwm2";
-	};
-
-	pwm3_ph_pin: pwm3-ph-pin {
-		pins = "PH0";
-		function = "pwm3";
-	};
-
-	pwm4_ph_pin: pwm4-ph-pin {
-		pins = "PH1";
-		function = "pwm4";
-	};
-
-	pwm5_pin: pwm5-pin {
-		pins = "PA12";
-		function = "pwm5";
 	};
 
 	clk_losc_32k_pin: clk-losc-32k-pin {
@@ -416,40 +301,6 @@
 	};
 };
 
-&spi1 {
-	status = "disabled";
-	#address-cells = <1>;
-	#size-cells = <0>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi1_pins>, <&spi1_cs1_pin>;
-
-	spidev@1 {
-		compatible = "rohm,dh2228fv";
-		status = "disabled";
-		reg = <1>;
-		spi-max-frequency = <1000000>;
-	};
-};
-
-
-&i2c0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c0_pi_pins>;
-	status = "disabled";
-};
-
-&i2c1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c1_pi_pins>;
-	status = "disabled";
-};
-
-&i2c2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c2_pi_pins>;
-	status = "disabled";
-};
-
 &i2c3 {
 	status = "okay";
 	pinctrl-names = "default";
@@ -470,10 +321,8 @@
 	};
 };
 
-&i2c4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c4_ph_pins>;
-	status = "disabled";
+&pwm5 {
+	status = "okay";
 };
 
 &uart0 {
@@ -484,7 +333,7 @@
 
 &uart1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+	pinctrl-0 = <&uart1_pg_pins>, <&uart1_pg_rts_cts_pins>;
 	uart-has-rtscts;
 	status = "okay";
 
@@ -499,30 +348,6 @@
 		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>;
 		max-speed = <1500000>;
         };
-};
-
-&uart2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart2_pins>;
-	status = "disabled";
-};
-
-&uart3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart3_pi_pins>;
-	status = "disabled";
-};
-
-&uart4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart4_pi_pins>;
-	status = "disabled";
-};
-
-&uart5 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart5_pins>;
-	status = "disabled";
 };
 
 &usbotg {

@@ -19,13 +19,6 @@
 
 	aliases {
 		serial0 = &uart0;
-		serial1 = &uart1;
-		serial2 = &uart2;
-		serial5 = &uart5;
-		i2c2 = &i2c2;
-		i2c3 = &i2c3;
-		i2c4 = &i2c4;
-		spi1 = &spi1;
 		ethernet0 = &emac0;
 	};
 
@@ -265,61 +258,10 @@
 	};
 };
 
-&spi1 {
-	status = "disabled";
-	#address-cells = <1>;
-	#size-cells = <0>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi1_pins>, <&spi1_cs1_pin>;
-
-	spidev@1 {
-		compatible = "rohm,dh2228fv";
-		status = "disabled";
-		reg = <1>;
-		spi-max-frequency = <1000000>;
-	};
-};
-
-&i2c2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c2_ph_pins>;
-	status = "disabled";
-};
-
-&i2c3 {
-	status = "disabled";
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c3_pg_pins>;
-};
-
-&i2c4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c4_pg_pins>;
-	status = "disabled";
-};
-
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_ph_pins>;
 	status = "okay";
-};
-
-&uart1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart1_pins>;
-	status = "disabled";
-};
-
-&uart2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart2_pins>;
-	status = "disabled";
-};
-
-&uart5 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart5_pins>;
-	status = "disabled";
 };
 
 &usbotg {

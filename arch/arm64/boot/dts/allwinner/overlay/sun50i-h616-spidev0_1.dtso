@@ -7,21 +7,24 @@
 	fragment@0 {
 		target-path = "/aliases";
 		__overlay__ {
-			spi1 = "/soc/spi@5011000";
+			spi0 = "/soc/spi@5010000";
 		};
 	};
 
 	fragment@1 {
-		target = <&spi1>;
+		target = <&spi0>;
 		__overlay__ {
-            status = "okay";
+			status = "okay";
 			#address-cells = <1>;
 			#size-cells = <0>;
-			spidev1_2: spidev@2 {
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi0_pins>, <&spi0_cs1_pin>;
+
+			spidev0_1: spidev@1 {
 				compatible = "rohm,dh2228fv";
 				status = "okay";
-				reg = <2>;
-				spi-max-frequency = <1000000>;
+				reg = <1>;
+				spi-max-frequency = <100000000>;
 			};
 		};
 	};

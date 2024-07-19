@@ -1,33 +1,73 @@
 /dts-v1/;
 /plugin/;
 
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/gpio/gpio.h>
+
 / {
+	compatible = "allwinner,sun50i-h616";
+
 	fragment@0 {
-		target = <&i2c_gpio>;
-		 __overlay__ {
-			status = "okay";
+		target-path = "/aliases";
+		__overlay__ {
+			spi1 = "/soc/spi@5011000";
 		};
 	};
 
-    fragment@1 {
+	fragment@1 {
 		target = <&spi1>;
 		 __overlay__ {
 			status = "okay";
-		};
-	};
+			#address-cells = <1>;
+			#size-cells = <0>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi1_pins>, <&spi1_cs0_pin>, <&spi1_cs1_pin>;
 
-    fragment@2 {
-		target = <&tft_35>;
-		__overlay__ {
-            status = "okay";
-            spi-max-frequency = <12500000>;
-		};
-	};
+			tft35c: tft35c@0 {
+				compatible = "ilitek,ili9486";
+				reg = <0>;
+				spi-max-frequency = <100000000>;
+				txbuflen = <32768>;
+				rotate = <90>;
+				bgr = <0>;
+				fps = <60>;
+				buswidth = <8>;
+				regwidth = <16>;
+				reset-gpios = <&pio 6 1 GPIO_ACTIVE_LOW>;  //phy.22
+				dc-gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>;    //phy.18
+				debug = <0>;
 
-    fragment@3 {
-		target = <&tft_tp>;
-		__overlay__ {
-            status = "okay";
+				init = <0x10000f1 0x36 0x4 0x0 0x3c 0xf 0x8f
+                                       0x10000f2 0x18 0xa3 0x12 0x2 0xb2 0x12 0xff 0x10 0x0
+                                       0x10000f8 0x21 0x4
+                                       0x10000f9 0x0 0x8
+                                       0x1000036 0x8
+                                       0x10000b4 0x0
+                                       0x10000c1 0x41
+                                       0x10000c5 0x0 0x91 0x80 0x0
+                                       0x10000e0 0xf 0x1f 0x1c 0xc 0xf 0x8 0x48 0x98 0x37 0xa 0x13 0x4 0x11 0xd 0x0
+                                       0x10000e1 0xf 0x32 0x2e 0xb 0xd 0x5 0x47 0x75 0x37 0x6 0x10 0x3 0x24 0x20 0x0
+                                       0x100003a 0x55
+                                       0x1000011
+                                       0x1000036 0x28
+                                       0x20000ff
+                                       0x1000029>;
+			};
+
+			ads7846: ads7846@1 {
+				compatible = "ti,ads7846";
+				reg = <1>;
+				spi-max-frequency = <2000000>;
+				interrupt-parent = <&pio>;
+				interrupts = <7 2 IRQ_TYPE_LEVEL_HIGH>;    //PH2
+				pendown-gpio = <&pio 7 2 GPIO_ACTIVE_LOW>; //phy.11
+
+				ti,x-plate-ohms = /bits/ 16 <60>;
+				ti,pressure-max = /bits/ 16 <255>;
+				ti,swap-xy = <1>;
+
+				//linux,wakeup;
+			};
 		};
 	};
 };

@@ -8,10 +8,8 @@
 			status = "okay";
 
 			spi1_cs_number = <0x2>;
-			spi1_cs_bitmap = <0x3>;
 
 			spi_board0@0 {
-				device_type = "spi_board0";
 				compatible = "linux,spidev";
 				spi-max-frequency = <10000000>;
 				reg = <0x0>;
@@ -19,7 +17,6 @@
 			};
 
 			spi_board1@1 {
-				device_type = "spi_board1";
 				compatible = "linux,spidev";
 				spi-max-frequency = <10000000>;
 				reg = <0x1>;

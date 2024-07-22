@@ -1275,12 +1275,10 @@ static int ads7846_probe(struct spi_device *spi)
 	unsigned long irq_flags;
 	int err;
 
-#if !defined(CONFIG_BOARD_BANANAPI_M4BERRY) && !defined(CONFIG_BOARD_BANANAPI_M4ZERO)
 	if (!spi->irq) {
 		dev_err(&spi->dev, "no IRQ?\n");
 		return -EINVAL;
 	}
-#endif
 
 	/* don't exceed max specified sample rate */
 	if (spi->max_speed_hz > (125000 * SAMPLE_BITS)) {
@@ -1404,22 +1402,14 @@ static int ads7846_probe(struct spi_device *spi)
 	if (IS_ERR(ts->reg)) {
 		err = PTR_ERR(ts->reg);
 		dev_err(&spi->dev, "unable to get regulator: %d\n", err);
-#if !defined(CONFIG_BOARD_BANANAPI_M4BERRY) && !defined(CONFIG_BOARD_BANANAPI_M4ZERO)
 		goto err_free_gpio;
-#endif
 	}
 
 	err = regulator_enable(ts->reg);
 	if (err) {
 		dev_err(&spi->dev, "unable to enable regulator: %d\n", err);
-#if !defined(CONFIG_BOARD_BANANAPI_M4BERRY) && !defined(CONFIG_BOARD_BANANAPI_M4ZERO)
 		goto err_put_regulator;
-#endif
 	}
-
-#if defined(CONFIG_BOARD_BANANAPI_M4BERRY) || defined(CONFIG_BOARD_BANANAPI_M4ZERO)
-	spi->irq = gpio_to_irq(ts->gpio_pendown);
-#endif
 
 	irq_flags = pdata->irq_flags ? : IRQF_TRIGGER_FALLING;
 	irq_flags |= IRQF_ONESHOT;
@@ -1482,13 +1472,11 @@ static int ads7846_probe(struct spi_device *spi)
 	free_irq(spi->irq, ts);
  err_disable_regulator:
 	regulator_disable(ts->reg);
-#if !defined(CONFIG_BOARD_BANANAPI_M4BERRY) && !defined(CONFIG_BOARD_BANANAPI_M4ZERO)
  err_put_regulator:
 	regulator_put(ts->reg);
  err_free_gpio:
 	if (!ts->get_pendown_state)
 		gpio_free(ts->gpio_pendown);
-#endif
  err_cleanup_filter:
 	if (ts->filter_cleanup)
 		ts->filter_cleanup(ts->filter_data);

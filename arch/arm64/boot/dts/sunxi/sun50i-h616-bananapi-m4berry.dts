@@ -1793,7 +1793,6 @@
 			resets = <0x2 0x1d>;
 			clock-frequency = <0x5f5e100>;
 			spi0_cs_number = <0x1>;
-			spi0_cs_bitmap = <0x1>;
 			dmas = <0x35 0x16 0x35 0x16>;
 			dma-names = "tx", "rx";
 			status = "disabled";
@@ -1801,8 +1800,6 @@
 			pinctrl-names = "default", "sleep";
 			pinctrl-0 = <0x42 0x43>;
 			pinctrl-1 = <0x44>;
-			spi1_cs_number = <0x1>;
-			spi1_cs_bitmap = <0x1>;
 			/*spi_dbi_enable = <0x0>;*/
 			phandle = <0xa9>;
 
@@ -1827,7 +1824,6 @@
 			resets = <0x2 0x1e>;
 			clock-frequency = <0x5f5e100>;
 			spi1_cs_number = <0x2>;
-			spi1_cs_bitmap = <0x2>;
 			dmas = <0x35 0x17 0x35 0x17>;
 			dma-names = "tx", "rx";
 			status = "disabled";

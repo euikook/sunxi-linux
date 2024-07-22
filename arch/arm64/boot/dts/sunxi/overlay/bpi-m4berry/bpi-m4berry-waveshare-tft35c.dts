@@ -1,27 +1,29 @@
 /dts-v1/;
 /plugin/;
 
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/gpio/sun4i-gpio.h>
+
 / {
 	fragment@0 {
 		target = <&spi1>;
 		__overlay__ {
 			status = "okay";
-
-			spi1_cs_number = <2>;
-			spi1_cs_bitmap = <3>;
+			spi1_cs_number = <0x2>;
 
 			tft35c: tft35c@0 {
 				compatible = "ilitek,ili9486";
+				status = "okay";
 				reg = <0>;
-				spi-max-frequency = <80000000>;
+				spi-max-frequency = <100000000>;
 				txbuflen = <32768>;
 				rotate = <90>;
 				bgr = <0>;
-				fps = <30>;
+				fps = <60>;
 				buswidth = <8>;
 				regwidth = <16>;
-				reset-gpios = <0x23 0x06 0x1 0x00>; //phy.22
-				dc-gpios = <0x23 0x06 0x9 0x00>;    //phy.18
+				reset-gpios = <0x23 0x6 0x1 0x1>; //phy.22
+				dc-gpios = <0x23 0x6 0x9 0x0>;    //phy.18
 				debug = <0>;
 
 				init = <0x10000f1 0x36 0x4 0x0 0x3c 0xf 0x8f
@@ -42,16 +44,16 @@
 			};
 
 			ads7846: ads7846@1 {
-				status = "okay";
 				compatible = "ti,ads7846";
-
-				spi-max-frequency = <2000000>;
+				status = "disabled";
 				reg = <1>;
-
-				pendown-gpio = <0x23 0x07 0x2 0x00>;  //phy.11
-
+				spi-max-frequency = <2000000>;
+				interrupt-parent = <&pio>;
+				interrupts = <PH 2 IRQ_TYPE_LEVEL_HIGH>;    //PH2
+				pendown-gpio = <0x23 0x7 0x2 0x1>;  //phy.11
 				ti,x-plate-ohms = /bits/ 16 <60>;
 				ti,pressure-max = /bits/ 16 <255>;
+				ti,swap-xy = <1>;
 
 				//linux,wakeup;
 			};

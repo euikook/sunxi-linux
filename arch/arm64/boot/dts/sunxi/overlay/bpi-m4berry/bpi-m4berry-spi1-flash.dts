@@ -8,7 +8,6 @@
 			status = "okay";
 
 			spi1_cs_number = <1>;
-			spi1_cs_bitmap = <1>;
 
 			spiflash: w25q128@0 {
 	                	#address-cells = <1>;

@@ -1037,7 +1037,8 @@ void
 dhd_conf_set_nv_name_by_chip(dhd_pub_t *dhd, char *nv_path, int ag_type)
 {
 	uint chip, chiprev;
-	char *name_ptr, *module_name = NULL, nv_name[32];
+	char *name_ptr, *chip_name = NULL, nv_name[32];
+	bool chip_map_v2;
 	int i;
 
 	chip = dhd->conf->chip;
@@ -1065,10 +1066,10 @@ dhd_conf_set_nv_name_by_chip(dhd_pub_t *dhd, char *nv_path, int ag_type)
 	}
 	name_ptr = &nv_path[i];
 
-	module_name = dhd_conf_get_module_name(dhd, ag_type);
-	if (module_name) {
+	chip_name = dhd_conf_get_chip_name(dhd, ag_type, &chip_map_v2);
+	if (chip_name) {
 		strcpy(name_ptr, "nvram_");
-		strcat(name_ptr, module_name);
+		strcat(name_ptr, chip_name);
 #ifdef BCMUSBDEV_COMPOSITE
 		strcat(name_ptr, "_cusb");
 #endif
@@ -1144,7 +1145,6 @@ dhd_conf_copy_path(dhd_pub_t *dhd, char *dst_name, char *dst_path, char *src_pat
 	CONFIG_TRACE("dst_path=%s\n", dst_path);
 }
 
-#ifdef CONFIG_PATH_AUTO_SELECT
 void
 dhd_conf_set_conf_name_by_chip(dhd_pub_t *dhd, char *conf_path)
 {
@@ -1177,7 +1177,6 @@ dhd_conf_set_conf_name_by_chip(dhd_pub_t *dhd, char *conf_path)
 
 	CONFIG_TRACE("config_path=%s\n", conf_path);
 }
-#endif
 
 #ifdef TPUT_MONITOR
 void
@@ -1426,13 +1425,12 @@ dhd_conf_set_path_params(dhd_pub_t *dhd, char *fw_path, char *nv_path)
 	if (dhd->clm_path[0] == '\0') {
 		dhd_conf_copy_path(dhd, "clm.blob", dhd->clm_path, fw_path);
 	}
-#ifdef CONFIG_PATH_AUTO_SELECT
-	dhd_conf_set_conf_name_by_chip(dhd, dhd->conf_path);
-#endif
 
+	dhd_conf_set_conf_name_by_chip(dhd, dhd->conf_path);
 	ag_type = dhd_conf_set_fw_name_by_chip(dhd, fw_path);
 	dhd_conf_set_nv_name_by_chip(dhd, nv_path, ag_type);
 	dhd_conf_set_clm_name_by_chip(dhd, dhd->clm_path, ag_type);
+
 #ifdef SET_FWNV_BY_MAC
 	dhd_conf_set_fw_name_by_mac(dhd, fw_path);
 	dhd_conf_set_nv_name_by_mac(dhd, nv_path);

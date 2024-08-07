@@ -612,10 +612,6 @@ static int dw8250_probe(struct platform_device *pdev)
 		data->msr_mask_off |= UART_MSR_TERI;
 	}
 
-	val = 0;
-	device_property_read_u32(dev, "fifo-size", &val);
-	p->fifosize = val;
-
 	/* If there is separate baudclk, get the rate from it. */
 	data->clk = devm_clk_get_optional(dev, "baudclk");
 	if (data->clk == NULL)

@@ -179,6 +179,11 @@ static void sun4i_hdmi_enable(struct drm_encoder *encoder,
 		val |= SUN4I_HDMI_VID_CTRL_HDMI_MODE;
 
 	writel(val, hdmi->base + SUN4I_HDMI_VID_CTRL_REG);
+
+#ifdef CONFIG_DRM_SUN4I_HDMI_AUDIO
+	if (hdmi->hdmi_audio && sun4i_hdmi_audio_create(hdmi))
+		DRM_ERROR("Couldn't create the HDMI audio adapter\n");
+#endif
 }
 
 static enum drm_mode_status sun4i_hdmi_mode_valid(struct drm_encoder *encoder,

@@ -1,6 +1,5 @@
 dtb-$(CONFIG_BOARD_BANANAPI_M4BERRY) += sun50i-h616-bananapi-m4berry.dtb
 dtb-$(CONFIG_BOARD_BANANAPI_M4ZERO) += sun50i-h616-bananapi-m4zero.dtb
-dtb-$(CONFIG_BOARD_ORANGEPI_ZERO3) += sun50i-h616-orangepi-zero3.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
@@ -11,4 +10,3 @@ DTC_FLAGS ?= -a 262144
 
 subdir-$(CONFIG_BOARD_BANANAPI_M4BERRY) += overlay/bpi-m4berry
 subdir-$(CONFIG_BOARD_BANANAPI_M4ZERO) += overlay/bpi-m4zero
-subdir-$(CONFIG_BOARD_ORANGEPI_ZERO3) += overlay/bpi-zero3

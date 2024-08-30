@@ -5,7 +5,7 @@
 	#address-cells = <0x2>;
 	#size-cells = <0x2>;
 	model = "Bananapi BPI-M4Berry";
-	compatible = "allwinner,h616", "arm,sun50iw9p1";
+	compatible = "allwinner,sun50i-h618", "arm,sun50iw9p1";
 
 	aliases {
 		serial0 = "/soc@3000000/uart@5000000";

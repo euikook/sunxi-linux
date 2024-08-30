@@ -1,5 +1,5 @@
-dtb-$(CONFIG_BOARD_BANANAPI_M4BERRY) += sun50i-h616-bananapi-m4berry.dtb
-dtb-$(CONFIG_BOARD_BANANAPI_M4ZERO) += sun50i-h616-bananapi-m4zero.dtb
+dtb-$(CONFIG_BOARD_BANANAPI_M4BERRY) += sun50i-h618-bananapi-m4berry.dtb
+dtb-$(CONFIG_BOARD_BANANAPI_M4ZERO) += sun50i-h618-bananapi-m4zero.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)

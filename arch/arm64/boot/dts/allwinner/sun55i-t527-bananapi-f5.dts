@@ -11,6 +11,15 @@
 	board = "T527", "T527-Bananapi-F5";
 	compatible = "allwinner,t527", "arm,sun55iw3p1";
 
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	memory {
+		reg = <0x00 0x40000000 0x01 0x00>;
+		device_type = "memory";
+	};
+
 	aliases {
 		pmu0 = &pmu0;
 		serial0 = &uart0;
@@ -2447,7 +2456,7 @@
 	vdmmc33sw-supply = <&reg_cldo3>;
 	vqmmc18sw-supply = <&reg_bldo3>;
 	vdmmc18sw-supply = <&reg_bldo3>;
-	/*vqmmc-supply = <&reg_bldo3>;*/
+	vqmmc-supply = <&reg_bldo3>;
 	status = "okay";
 };
 

@@ -1347,7 +1347,10 @@ CONFIG_AW_SPI=y
 #
 # SPI NG Drivers
 #
-# CONFIG_AW_SPI_NG is not set
+CONFIG_AW_SPI_NG=y
+# CONFIG_AW_SPI_NG_ATOMIC_XFER is not set
+# CONFIG_AW_SPI_SLAVETEST is not set
+# CONFIG_AW_SPI_CAMERATEST is not set
 # end of SPI NG Drivers
 
 #

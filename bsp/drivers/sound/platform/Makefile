@@ -4,8 +4,8 @@
 #
 # Copyright(c) 2022-2027 Allwinnertech Co., Ltd.
 
-ccflags-y += -I $(srctree)/bsp/drivers/sound/adapter
-ccflags-y += -I $(srctree)/bsp/drivers/sound/platform
+ccflags-y += -I$(srctree)/bsp/drivers/sound/adapter
+ccflags-y += -I$(srctree)/bsp/drivers/sound/platform
 
 ADPT_DIR := ../adapter
 

@@ -5,7 +5,7 @@
 
 # Core functionality.
 
-ccflags-y += -I $(srctree)/include/linux/mtd
+ccflags-y += -I$(srctree)/include/linux/mtd
 
 obj-$(CONFIG_AW_MTD)           		+= parsers/
 obj-$(CONFIG_AW_MTD_SPI_NOR_6_1)	+= spi-nor-6.1/

@@ -3,8 +3,8 @@
 # Makefile for MMC/SD host controller drivers
 #
 subdir-ccflags-$(CONFIG_MMC_DEBUG) := -DDEBUG
-ccflags-y += -I $(srctree)/include/linux/reset
-ccflags-y += -I $(srctree)/drivers/pinctrl/sunxi
+ccflags-y += -I$(srctree)/include/linux/reset
+ccflags-y += -I$(srctree)/drivers/pinctrl/sunxi
 ccflags-y +=  -I $(srctree)/drivers/mmc/core/
 ccflags-y +=  -I $(srctree)/drivers/mmc/host
 obj-$(CONFIG_AW_MMC)		+= sunxi_mmc_host.o

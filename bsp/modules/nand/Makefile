@@ -16,8 +16,8 @@
 # KERNEL_OUT_DIR  (O)
 # MODULE_INS_DIR  (INSTALL_MOD_PATH)
 # Init all variables
-ccflags-y += -I $(srctree)/include/linux
-ccflags-y += -I $(srctree)/bsp/modules/nand/common1
+ccflags-y += -I$(srctree)/include/linux
+ccflags-y += -I$(srctree)/bsp/modules/nand/common1
 
 KERNEL_SRC_DIR := $(srctree)
 MODULE_INS_DIR := 

@@ -3,7 +3,7 @@
 rcq_dir = g2d_rcq
 rcq_obj = ${rcq_dir}/g2d.o ${rcq_dir}/g2d_top.o
 
-ccflags-y += -I $(srctree)/drivers/hwspinlock
+ccflags-y += -I$(srctree)/drivers/hwspinlock
 ifeq (${CONFIG_G2D_MIXER},y)
 rcq_obj += ${rcq_dir}/g2d_mixer.o ${rcq_dir}/g2d_ovl_v.o\
 	   ${rcq_dir}/g2d_ovl_u.o ${rcq_dir}/g2d_rcq.o	\

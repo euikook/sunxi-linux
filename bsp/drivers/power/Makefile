@@ -29,4 +29,4 @@ obj-$(CONFIG_AW_AXP2601_POWER)		+= supply/axp2601_battery.o
 
 obj-$(CONFIG_AW_INPUT_AXP2101_PEK)	+= power_key/axp2101-pek.o
 
-ccflags-y += -I $(srctree)/include/linux/power
+ccflags-y += -I$(srctree)/include/linux/power

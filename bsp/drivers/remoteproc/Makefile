@@ -2,7 +2,7 @@
 #
 # Makefile for the remoteproc drivers.
 #
-ccflags-y += -I $(srctree)/drivers/remoteproc
+ccflags-y += -I$(srctree)/drivers/remoteproc
 obj-$(CONFIG_AW_REMOTEPROC_E906_BOOT) += sunxi_rproc_e906_boot.o
 obj-$(CONFIG_AW_REMOTEPROC_E907_BOOT) += sunxi_rproc_e907_boot.o
 obj-$(CONFIG_AW_REMOTEPROC_HIFI4_BOOT) += sunxi_rproc_hifi4_boot.o

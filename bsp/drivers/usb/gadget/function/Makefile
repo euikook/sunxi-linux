@@ -4,8 +4,8 @@
 #
 
 # Gadget
-ccflags-y				+= -I $(srctree)/drivers/usb/gadget
-ccflags-y				+= -I $(srctree)/include/linux
+ccflags-y				+= -I$(srctree)/drivers/usb/gadget
+ccflags-y				+= -I$(srctree)/include/linux
 
 #ifeq ($(CC),clang)
 #ccflags-y += -fsanitize-blacklist=$(srctree)/$(src)/blacklist.txt

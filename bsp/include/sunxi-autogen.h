@@ -1,1 +1,1 @@
-#define AW_BSP_VERSION "UNKNOWN, 2024-11-19 11:59:53"
+#define AW_BSP_VERSION "https://github.com/Dangku/sunxi-linux/tree/sun55iw3-5.15/"

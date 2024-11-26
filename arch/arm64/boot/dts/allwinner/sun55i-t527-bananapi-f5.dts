@@ -670,12 +670,12 @@
 	vcc-pj-supply = <&reg_pio1_8>;
 	vcc-pk-supply = <&reg_pio1_8>;
 	uart0_pins_a: uart0_pins@0 {
-		pins = "", "";
+		pins = "PB9", "PB10";
 		function = "uart0";
 	};
 
 	uart0_pins_b: uart0_pins@1 {
-		pins = "", "";
+		pins = "PB9", "PB10";
 		function = "gpio_in";
 	};
 

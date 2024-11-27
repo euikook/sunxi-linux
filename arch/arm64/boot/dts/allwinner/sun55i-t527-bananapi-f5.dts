@@ -664,6 +664,7 @@
 	vcc-pg-supply = <&reg_pio1_8>;
 	vcc-pf-supply = <&reg_pio1_8>;
 	vcc-pfo-supply = <&reg_pio3_3>;
+	vcc-pb-supply = <&reg_pio3_3>;
 	vcc-pd-supply = <&reg_pio1_8>;
 	vcc-pe-supply = <&reg_pio1_8>;
 	vcc-pi-supply = <&reg_pio3_3>;
@@ -1328,6 +1329,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart2_pins_a>;
 	pinctrl-1 = <&uart2_pins_b>;
+	uart-supply = <&reg_cldo3>;
 	status = "disabled";
 };
 
@@ -1335,6 +1337,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart3_pins_a>;
 	pinctrl-1 = <&uart3_pins_b>;
+	uart-supply = <&vdd3v3_sys>;
 	status = "disabled";
 };
 
@@ -1342,6 +1345,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart4_pins_a>;
 	pinctrl-1 = <&uart4_pins_b>;
+	uart-supply = <&vdd3v3_sys>;
 	status = "disabled";
 };
 
@@ -1349,6 +1353,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart5_pins_a>;
 	pinctrl-1 = <&uart5_pins_b>;
+	uart-supply = <&vdd3v3_sys>;
 	status = "disabled";
 };
 
@@ -1356,6 +1361,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart6_pins_a>;
 	pinctrl-1 = <&uart6_pins_b>;
+	uart-supply = <&vdd3v3_sys>;
 	status = "disabled";
 };
 
@@ -1363,6 +1369,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart7_pins_a>;
 	pinctrl-1 = <&uart7_pins_b>;
+	uart-supply = <&reg_cldo3>;
 	status = "disabled";
 };
 

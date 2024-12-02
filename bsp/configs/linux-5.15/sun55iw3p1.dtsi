@@ -1425,6 +1425,7 @@
 
 		sunxi_drm: sunxi-drm {
 			compatible = "allwinner,sunxi-drm";
+			fb_base = <0>;
 			status = "okay";
 			route {
 				disp0_lvds0: disp0_lvds0 {
@@ -2978,7 +2979,7 @@
 			reset-names = "npu_rst";
 			interrupt-names = "npu";
 			npu-vf = <696>;
-			npu-regulator = <1>;
+			npu-setvol = <1>;
 			power-domains = <&pd A523_PD_NPU>;
 			status = "okay";
 		};

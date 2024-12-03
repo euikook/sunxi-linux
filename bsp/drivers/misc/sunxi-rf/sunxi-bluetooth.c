@@ -26,6 +26,7 @@
 #include <linux/clk.h>
 #include <linux/rfkill.h>
 #include <linux/regulator/consumer.h>
+#include <linux/miscdevice.h>
 #include <linux/platform_device.h>
 #include "internal.h"
 #include "sunxi-rfkill.h"
@@ -86,6 +87,7 @@ static int sunxi_bt_on(struct sunxi_bt_platdata *data, bool on_off)
 
 		for (i = 0; i < PWR_MAX; i++) {
 			if (!IS_ERR_OR_NULL(data->power[i])) {
+				/* bpi
 				if (data->power_vol[i]) {
 					ret = regulator_set_voltage(data->power[i],
 							data->power_vol[i], data->power_vol[i]);
@@ -101,7 +103,7 @@ static int sunxi_bt_on(struct sunxi_bt_platdata *data, bool on_off)
 								i, data->power_name[i]);
 						return ret;
 					}
-				}
+				}*/
 
 				ret = regulator_enable(data->power[i]);
 				if (ret < 0) {
@@ -143,6 +145,7 @@ static int sunxi_bt_on(struct sunxi_bt_platdata *data, bool on_off)
 	return 0;
 }
 
+#ifdef SUNXI_RFKILL_BLUETOOTH
 static int sunxi_bt_set_block(void *data, bool blocked)
 {
 	struct sunxi_bt_platdata *platdata = data;
@@ -178,8 +181,8 @@ static int sunxi_bt_set_block(void *data, bool blocked)
 static const struct rfkill_ops sunxi_bt_rfkill_ops = {
 	.set_block = sunxi_bt_set_block,
 };
-
-static ssize_t state_show(struct device *dev,
+#else
+static ssize_t power_state_show(struct device *dev,
 	struct device_attribute *attr, char *buf)
 {
 	if (!bluetooth_data)
@@ -187,7 +190,7 @@ static ssize_t state_show(struct device *dev,
 	return sprintf(buf, "%d\n", bluetooth_data->power_state);
 }
 
-static ssize_t state_store(struct device *dev,
+static ssize_t power_state_store(struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t count)
 {
 	unsigned long state;
@@ -195,6 +198,9 @@ static ssize_t state_store(struct device *dev,
 
 	if (!bluetooth_data)
 		return 0;
+
+	if (!capable(CAP_NET_ADMIN))
+		return -EPERM;
 
 	err = kstrtoul(buf, 0, &state);
 	if (err)
@@ -210,18 +216,24 @@ static ssize_t state_store(struct device *dev,
 	return count;
 }
 
-static DEVICE_ATTR(state, S_IRUGO | S_IWUSR,
-		state_show, state_store);
+static DEVICE_ATTR(power_state, S_IRUGO | S_IWUSR,
+		power_state_show, power_state_store);
 
-static struct attribute *miscdev_attributes_wlan[] = {
-	&dev_attr_state.attr,
+static struct attribute *misc_attributes[] = {
+	&dev_attr_power_state.attr,
 	NULL,
 };
 
-static struct attribute_group miscdev_attribute_group = {
-	.name  = "bluetooth",
-	.attrs = miscdev_attributes_wlan,
+static struct attribute_group misc_attribute_group = {
+	.name  = "rf-ctrl",
+	.attrs = misc_attributes,
 };
+
+static struct miscdevice sunxi_bluetooth_dev = {
+	.minor = MISC_DYNAMIC_MINOR,
+	.name  = "sunxi-bluetooth",
+};
+#endif
 
 int sunxi_bt_init(struct platform_device *pdev)
 {
@@ -325,6 +337,7 @@ int sunxi_bt_init(struct platform_device *pdev)
 	data->always_on = of_property_read_bool(np, "regulator-always-on") ? 1 : 0;
 	dev_info(dev, "bluetooth power boot-on: %d, always-on: %d\n", data->boot_on, data->always_on);
 
+#ifdef SUNXI_BLUETOOTH_RFKILL
 	data->rfkill = rfkill_alloc("sunxi-bt", dev, RFKILL_TYPE_BLUETOOTH,
 				&sunxi_bt_rfkill_ops, data);
 	if (!data->rfkill)
@@ -336,20 +349,30 @@ int sunxi_bt_init(struct platform_device *pdev)
 	if (ret)
 		goto fail_rfkill;
 
-	ret = sysfs_create_group(&sunxi_rfkill_miscdev.this_device->kobj,
-			&miscdev_attribute_group);
+	data->power_state = 0;
+#else
+	ret = misc_register(&sunxi_bluetooth_dev);
 	if (ret) {
-		dev_err(dev, "sunxi-bluetooth register rfkill miscdev attr group failed!\n");
-		goto fail_rfkill;
+		dev_err(dev, "sunxi-bluetooth register driver as misc device error!\n");
+		return ret;
 	}
+	ret = sysfs_create_group(&sunxi_bluetooth_dev.this_device->kobj,
+			&misc_attribute_group);
+	if (ret) {
+		dev_err(dev, "sunxi-bluetooth register sysfs create group failed!\n");
+		return ret;
+	}
+#endif
 
 	data->power_state = 0;
 	bluetooth_data = data;
 	return 0;
 
+#ifdef SUNXI_BLUETOOTH_RFKILL
 fail_rfkill:
 	if (data->rfkill)
 		rfkill_destroy(data->rfkill);
+#endif
 
 	return ret;
 }
@@ -363,8 +386,8 @@ int sunxi_bt_deinit(struct platform_device *pdev)
 	if (!data)
 		return 0;
 
-	sysfs_remove_group(&(sunxi_rfkill_miscdev.this_device->kobj),
-			&miscdev_attribute_group);
+	sysfs_remove_group(&sunxi_bluetooth_dev.this_device->kobj,
+			&misc_attribute_group);
 
 	rfk = data->rfkill;
 	if (rfk) {

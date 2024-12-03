@@ -1322,7 +1322,7 @@
 };
 
 &uart1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &uart2 {
@@ -2648,7 +2648,7 @@
 	ignore-pm-notify;
 	max-frequency = <150000000>;
 	ctl-spec-caps = <0x408>;
-	status = "disabled";
+	status = "okay";
 };
 
 &nand0 {
@@ -2684,8 +2684,8 @@
 	/* wlan session */
 	wlan {
 		compatible    = "allwinner,sunxi-wlan";
-		clocks;
-		clock-names;
+		clocks        = <&rtc_ccu CLK_OSC32K_OUT>;
+		clock-names   = "osc32k-out";
 		wlan_power    = "vdd3v3_sys", "axp2202-bldo1"; /* vcc-pl/vcc-pg/vcc-pm */
 		wlan_power_vol= <3300000>, <1800000>;
 		wlan_busnum   = <0x1>;
@@ -2697,9 +2697,9 @@
 	/* bt session */
 	bt {
 		compatible    = "allwinner,sunxi-bt";
-		clocks;
-		clock-names;
-		bt_power    = "axp2202-dcdc4", "axp2202-bldo1"; /* vcc-pl/vcc-pg/vcc-pm */
+		clocks        = <&rtc_ccu CLK_OSC32K_OUT>;
+		clock-names   = "osc32k-out";
+		bt_power    = "vdd3v3_sys", "axp2202-bldo1"; /* vcc-pl/vcc-pg/vcc-pm */
 		bt_power_vol= <3300000>, <1800000>;
 		bt_rst_n      = <&r_pio PM 2 GPIO_ACTIVE_LOW>;
 	};

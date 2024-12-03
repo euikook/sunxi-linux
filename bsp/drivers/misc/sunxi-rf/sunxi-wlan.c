@@ -144,6 +144,7 @@ static int sunxi_wlan_on(struct sunxi_wlan_platdata *data, bool on_off)
 
 		for (i = 0; i < PWR_MAX; i++) {
 			if (!IS_ERR_OR_NULL(data->power[i])) {
+				/* bpi
 				if (data->power_vol[i]) {
 					ret = regulator_set_voltage(data->power[i],
 							data->power_vol[i], data->power_vol[i]);
@@ -159,7 +160,7 @@ static int sunxi_wlan_on(struct sunxi_wlan_platdata *data, bool on_off)
 								i, data->power_name[i]);
 						return ret;
 					}
-				}
+				}*/
 
 				ret = regulator_enable(data->power[i]);
 				if (ret < 0) {

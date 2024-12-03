@@ -472,6 +472,14 @@
 			};
 		};
 	};
+
+	fan: pwm-fan {
+		compatible = "pwm-fan";
+		#cooling-cells = <2>;
+		fan-supply = <&vdd5v0_sys>;
+		cooling-levels = <0 102 170 230>;
+		pwms = <&pwm0 14 50000 0>;
+	};
 };
 
 &de {
@@ -892,6 +900,17 @@
 	pwm0_13_pin_sleep: pwm0_13@1 {
 		pins = "PI12";
 		function = "gpio_in";
+	};
+
+	pwm0_14_pin_active: pwm0_14@0 {
+		pins = "PI13";
+		function = "pwm0_14";
+		drive-strength = <10>;
+	};
+
+	pwm0_14_pin_sleep: pwm0_14@1 {
+		pins = "PI13";
+		function = "gpio_out";
 	};
 
 	ledc_pins_a: ledc@0 {
@@ -1542,6 +1561,13 @@
 	pinctrl-0 = <&pwm0_13_pin_active>;
 	pinctrl-1 = <&pwm0_13_pin_sleep>;
 	status = "disabled";
+};
+
+&pwm0_14 {
+	pinctrl-names = "active", "sleep";
+	pinctrl-0 = <&pwm0_14_pin_active>;
+	pinctrl-1 = <&pwm0_14_pin_sleep>;
+	status = "okay";
 };
 
 &ledc  {
@@ -3275,6 +3301,30 @@
 			temperature = <115000>;
 			type = "critical";
 			hysteresis = <0>;
+		};
+
+		cpu_warm: cpu-warm {
+			temperature = <55000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		cpu_hot: cpu-hot {
+			temperature = <65000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+	};
+
+	cooling-maps {
+		map1 {
+			trip = <&cpu_warm>;
+			cooling-device = <&fan THERMAL_NO_LIMIT 1>;
+		};
+
+		map2 {
+			trip = <&cpu_hot>;
+			cooling-device = <&fan 2 THERMAL_NO_LIMIT>;
 		};
 	};
 };

@@ -1182,6 +1182,7 @@
 			"PH4", "PH5", "PH6", "PH7",
 			 "PH9", "PH10","PH13","PH14",
 			  "PH15","PH16","PH17","PH18";
+		muxsel = <5>; /* for uboot used */
 		drive-strength = <40>;
 		function = "gmac0";
 		bias-pull-up;
@@ -1212,6 +1213,7 @@
 			"PJ12","PJ13", "PJ14", "PJ15";
 		function = "gpio_in";
 	};
+
 	spi1_pin_default: spi1_pin_default{
 		pins = "PI2","PI3","PI4","PI5";
 		function = "spi1";
@@ -3149,6 +3151,10 @@
 	status = "okay";
 };
 
+&gmac1_phy0 {
+	compatible = "ethernet-phy-id001c.c916";
+	reset-gpios = <&pio PI 14 GPIO_ACTIVE_LOW>;
+};
 
 &gmac1 {
 	phy-mode = "rgmii";
@@ -3160,11 +3166,6 @@
 	rx-delay = <1>;
 	dwmac3v3-supply = <&vdd3v3_sys>;
 	status = "okay";
-	mdio1: mdio1@1 {
-		gmac1_phy0: ethernet-phy@1 {
-			reset-gpios = <&pio PI 14 GPIO_ACTIVE_LOW>;
-		};
-	};
 };
 
 &spi1 {

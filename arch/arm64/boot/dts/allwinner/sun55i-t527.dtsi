@@ -3256,7 +3256,7 @@
 			pwm-number = <4>;
 			pwm-base = <0x10>;
 			sunxi-pwms = <&pwm1_0>, <&pwm1_1>, <&pwm1_2>, <&pwm1_3>;
-			status = "disabled";
+			status = "okay";
 		};
 
 		pwm1_0: pwm1_0@2051010 {

@@ -111,6 +111,10 @@ static int hym8563_rtc_read_time(struct device *dev, struct rtc_time *tm)
 	tm->tm_mon = bcd2bin(buf[5] & HYM8563_MONTH_MASK) - 1; /* 0 = Jan */
 	tm->tm_year = bcd2bin(buf[6]) + 100;
 
+	dev_info(&client->dev, "read_time:%4d-%02d-%02d(%d) %02d:%02d:%02d\n",
+                1900 + tm->tm_year, tm->tm_mon + 1, tm->tm_mday, tm->tm_wday,
+                tm->tm_hour, tm->tm_min, tm->tm_sec);
+
 	return 0;
 }
 
@@ -119,6 +123,10 @@ static int hym8563_rtc_set_time(struct device *dev, struct rtc_time *tm)
 	struct i2c_client *client = to_i2c_client(dev);
 	u8 buf[7];
 	int ret;
+
+	dev_info(&client->dev, "set_time:%4d-%02d-%02d(%d) %02d:%02d:%02d\n",
+                1900 + tm->tm_year, tm->tm_mon + 1, tm->tm_mday, tm->tm_wday,
+                tm->tm_hour, tm->tm_min, tm->tm_sec);
 
 	/* Years >= 2100 are to far in the future, 19XX is to early */
 	if (tm->tm_year < 100 || tm->tm_year >= 200)
@@ -519,6 +527,20 @@ static int hym8563_probe(struct i2c_client *client,
 	struct hym8563 *hym8563;
 	int ret;
 
+	/*
+	* pcf85063 initial time(2021_1_1_12:00:00),
+	* avoid pcf85063 read time error
+	*/
+	struct rtc_time tm_read, tm = {
+		.tm_wday = 0,
+		.tm_year = 121,
+		.tm_mon = 0,
+		.tm_mday = 1,
+		.tm_hour = 12,
+		.tm_min = 0,
+		.tm_sec = 0,
+	};
+
 	hym8563 = devm_kzalloc(&client->dev, sizeof(*hym8563), GFP_KERNEL);
 	if (!hym8563)
 		return -ENOMEM;
@@ -554,7 +576,13 @@ static int hym8563_probe(struct i2c_client *client,
 	if (ret < 0)
 		return ret;
 
-	dev_dbg(&client->dev, "rtc information is %s\n",
+	/*bpi*/
+	hym8563_rtc_read_time(&client->dev, &tm_read);
+	if ((tm_read.tm_year < 70) || (tm_read.tm_year > 200) ||
+        	(tm_read.tm_mon == -1) || (rtc_valid_tm(&tm_read) != 0))
+		hym8563_rtc_set_time(&client->dev, &tm);
+
+	dev_info(&client->dev, "rtc information is %s\n",
 		(ret & HYM8563_SEC_VL) ? "invalid" : "valid");
 
 	hym8563->rtc = devm_rtc_device_register(&client->dev, client->name,

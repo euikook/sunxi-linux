@@ -2219,7 +2219,7 @@
 		bat_power_supply: bat-power-supply {
 			compatible = "x-powers,axp2202-bat-power-supply";
 			param = <&axp2202_parameter>;
-			status = "disabled";
+			status = "okay";
 
 			pmu_chg_ic_temp = <0>;
 
@@ -2266,7 +2266,7 @@
 			pmu_bat_para31 = <100>;
 			pmu_bat_para32 = <100>;
 
-			pmu_bat_temp_enable = <1>;
+			pmu_bat_temp_enable = <0>;
 			pmu_jetia_en        = <1>;
 			pmu_bat_charge_ltf = <1738>; //-5
 			pmu_bat_charge_htf = <150>; //60

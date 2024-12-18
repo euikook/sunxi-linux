@@ -189,7 +189,9 @@ static int chacha_simd_stream_xor(struct skcipher_request *req,
 				      ctx->nrounds);
 			kernel_fpu_end();
 		}
+		kernel_fpu_end();
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+		kernel_fpu_begin();
 	}
 
 	return err;

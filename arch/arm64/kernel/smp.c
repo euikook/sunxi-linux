@@ -32,6 +32,7 @@
 #include <linux/irq_work.h>
 #include <linux/kernel_stat.h>
 #include <linux/kexec.h>
+#include <linux/kvm_host.h>
 
 #include <asm/alternative.h>
 #include <asm/atomic.h>
@@ -40,6 +41,7 @@
 #include <asm/cputype.h>
 #include <asm/cpu_ops.h>
 #include <asm/daifflags.h>
+#include <asm/kvm_mmu.h>
 #include <asm/mmu_context.h>
 #include <asm/numa.h>
 #include <asm/pgtable.h>
@@ -428,6 +430,8 @@ static void __init hyp_mode_check(void)
 			   "CPU: CPUs started in inconsistent modes");
 	else
 		pr_info("CPU: All CPU(s) started at EL1\n");
+	if (IS_ENABLED(CONFIG_KVM_ARM_HOST))
+		kvm_compute_layout();
 }
 
 void __init smp_cpus_done(unsigned int max_cpus)
